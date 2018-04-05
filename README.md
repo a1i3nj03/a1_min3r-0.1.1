@@ -12,12 +12,12 @@ BTC donation address: 1AJdfCpLWPNoAMDfHF1wD5y8VgKSSTHxPo (tpruvot)
 
 A part of the recent algos were originally written by [djm34](https://github.com/djm34) and [alexis78](https://github.com/alexis78)
 
-This variant was tested and built on Linux (ubuntu server 14.04, 16.04, Fedora 22 to 25)
-It is also built for Windows 7 to 10 with VStudio 2013, to stay compatible with Windows 7 and Vista.
+This variant may be built on Linux someday (ubuntu server 14.04, 16.04, Fedora 22 to 25)
+It is built for Windows 7 to 10 with VStudio 2013, to stay compatible with Windows 7 and Vista.
 
-Note that the x86 releases are generally faster than x64 ones on Windows, but that tend to change with the recent drivers.
+Note that the x86 releases are generally NOT faster than x64 ones on Windows, that tends to change with the recent drivers.
 
-The recommended CUDA Toolkit version was the [6.5.19](http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.19_windows_general_64.exe), but some light algos could be faster with the version 7.5 and 8.0 (like lbry, decred and skein).
+The recommended CUDA Toolkit version was the [6.5.19](http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.19_windows_general_64.exe), but some light algos could be faster with the version 7.5 and 8.0 (like lbry, decred and skein). CUDA 9.0 was used, but 9.1 should be even better.
 
 About source code dependencies
 ------------------------------
