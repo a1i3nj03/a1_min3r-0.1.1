@@ -1,6 +1,6 @@
 # ccminer
 
-I R broke'd, send me RVN coinz @ RP6cmcZNE9g5oEakzCb88DgVJSLVBYJwnu PLZ
+I R broke'd, send me (a1i3nj03) RVN coinz @ RP6cmcZNE9g5oEakzCb88DgVJSLVBYJwnu PLZ
 
 Based on Christian Buchner's &amp; Christian H.'s CUDA project, no more active on github since 2014.
 
