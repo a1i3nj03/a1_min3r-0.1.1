@@ -1,8 +1,13 @@
 # ccminer
 
+Download here: https://github.com/a1i3nj03/a1_min3r-0.1.1/releases/download/0.1.1/ccminer.zip.Windows.x64.zip
+
+Younger better faster
+
 I R broke'd, send me (a1i3nj03) RVN coinz @ RP6cmcZNE9g5oEakzCb88DgVJSLVBYJwnu PLZ
 
 Forgot to add dev fee :sadparrot:
+
 
 Based on Christian Buchner's &amp; Christian H.'s CUDA project, no more active on github since 2014.
 
