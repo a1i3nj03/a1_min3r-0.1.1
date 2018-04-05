@@ -2,6 +2,8 @@
 
 I R broke'd, send me (a1i3nj03) RVN coinz @ RP6cmcZNE9g5oEakzCb88DgVJSLVBYJwnu PLZ
 
+Forgot to add dev fee :sadparrot:
+
 Based on Christian Buchner's &amp; Christian H.'s CUDA project, no more active on github since 2014.
 
 Check the [README.txt](README.txt) for the additions
