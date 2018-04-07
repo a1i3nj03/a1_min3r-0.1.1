@@ -1,16 +1,14 @@
 # ccminer
 
-Download here: https://github.com/a1i3nj03/a1_min3r-0.1.1/releases/download/0.1.1/ccminer.zip.Windows.x64.zip
+Download here: https://github.com/a1i3nj03/a1_min3r-0.1.1/releases
 
-Use the source: https://github.com/a1i3nj03/a1_min3r-0.1.1/archive/0.1.1.tar.gz
-
-use like this: ccminer -i 21 -a x16r -o stratum+tcp://myminingpoolisthebest.est:1337 - mywalletisbetterthanurs.TR_FTW -p password123 --submit-stale
+use like this: ccminer -o stratum+tcp://myminingpoolisthebest.est:1337 - mywalletisbetterthanurs.TR_FTW -p password123
 
 Younger better faster
 
 I R broke'd, send me (a1i3nj03) RVN coinz @ RP6cmcZNE9g5oEakzCb88DgVJSLVBYJwnu PLZ
 
-Forgot to add dev fee :sadparrot:
+(Always) Forget to add dev fee :sadparrot:
 
 
 Based on Christian Buchner's &amp; Christian H.'s CUDA project, no more active on github since 2014.
