@@ -2,7 +2,7 @@
  * Timetravel CUDA implementation
  *  by tpruvot@github - March 2017
  */
-
+#if 0
 #include <stdio.h>
 #include <memory.h>
 #include <unistd.h>
@@ -552,3 +552,4 @@ extern "C" void free_timetravel(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

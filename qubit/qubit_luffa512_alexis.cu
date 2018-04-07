@@ -829,7 +829,7 @@ void qubit_luffa512_cpu_setBlock_80_alexis(void *pdata)
 }
 
 __host__
-void x11_luffa512_cpu_hash_64_alexis(int thr_id, uint32_t threads,uint32_t *d_hash)
+void x11_luffa512_cpu_hash_64_alexis(int thr_id, uint32_t threads,uint32_t *d_hash, int order)
 {
     const uint32_t threadsperblock = 384;
 

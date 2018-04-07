@@ -2148,7 +2148,7 @@ void do_gpu_tests(void)
 	opt_tracegpu = false;
 #endif
 }
-
+#if 0
 void print_hash_tests(void)
 {
 	uchar *scratchbuf = NULL;
@@ -2342,3 +2342,4 @@ void print_hash_tests(void)
 
 	free(scratchbuf);
 }
+#endif

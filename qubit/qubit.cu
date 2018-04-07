@@ -1,3 +1,4 @@
+#if 0
 /*
  * qubit algorithm
  *
@@ -173,3 +174,4 @@ extern "C" void free_qubit(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

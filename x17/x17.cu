@@ -1,3 +1,4 @@
+#if 0
 /**
  * X17 algorithm (X15 + sha512 + haval256)
  */
@@ -302,3 +303,4 @@ extern "C" void free_x17(int thr_id)
 	cudaDeviceSynchronize();
 	init[thr_id] = false;
 }
+#endif

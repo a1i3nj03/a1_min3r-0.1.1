@@ -1,3 +1,4 @@
+#if 0
 /*
  * X13 algorithm
  */
@@ -263,3 +264,4 @@ extern "C" void free_hsr(int thr_id)
 	cudaDeviceSynchronize();
 	init[thr_id] = false;
 }
+#endif

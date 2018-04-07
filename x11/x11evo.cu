@@ -1,3 +1,4 @@
+#if 0
 /**
  * X11EVO algo implementation
  * Cuda implementation by tpruvot@github - May 2016
@@ -412,3 +413,4 @@ extern "C" void free_x11evo(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

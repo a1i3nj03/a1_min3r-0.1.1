@@ -1,3 +1,4 @@
+#if 0
 //
 //
 //  PHI1612 algo
@@ -221,3 +222,4 @@ extern "C" void free_phi(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

@@ -1,3 +1,4 @@
+#if 0
 /**
  * Timetravel-10 (bitcore) CUDA implementation
  *  by tpruvot@github - May 2017
@@ -437,3 +438,4 @@ extern "C" void free_bitcore(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

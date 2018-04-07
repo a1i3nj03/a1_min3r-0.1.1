@@ -1,3 +1,4 @@
+#if 0
 /**
  * Tribus Algo for Denarius
  *
@@ -182,3 +183,4 @@ extern "C" void free_tribus(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

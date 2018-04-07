@@ -1,3 +1,4 @@
+#if 0
 /**
  * Skunk Algo for Signatum
  * (skein, cube, fugue, gost streebog)
@@ -209,3 +210,4 @@ extern "C" void free_skunk(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

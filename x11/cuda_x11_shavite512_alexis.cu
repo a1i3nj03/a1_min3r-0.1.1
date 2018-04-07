@@ -507,7 +507,7 @@ void x11_shavite512_gpu_hash_64_alexis(const uint32_t threads, uint64_t *g_hash)
 }
 
 __host__
-void x11_shavite512_cpu_hash_64_alexis(int thr_id, uint32_t threads, uint32_t *d_hash)
+void x11_shavite512_cpu_hash_64_alexis(int thr_id, uint32_t threads, uint32_t *d_hash, int order)
 {
 	dim3 grid((threads + TPB-1)/TPB);
 	dim3 block(TPB);

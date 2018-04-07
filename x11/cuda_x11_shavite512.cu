@@ -597,7 +597,7 @@ void x11_shavite512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t startNoun
 }
 
 __host__
-void x11_shavite512_cpu_hash_80(int thr_id, uint32_t threads, uint32_t startNounce, uint32_t *d_outputHash, int order)
+void x11_shavite512_cpu_hash_80(int thr_id, uint32_t threads, uint32_t startNounce, uint32_t *d_outputHash)
 {
 	const uint32_t threadsperblock = TPB;
 

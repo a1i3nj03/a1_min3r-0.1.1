@@ -195,11 +195,14 @@ static inline uint32_t le32dec(const void *pp)
 #if !HAVE_DECL_BE32ENC
 static inline void be32enc(void *pp, uint32_t x)
 {
+	/*
 	uint8_t *p = (uint8_t *)pp;
 	p[3] = x & 0xff;
 	p[2] = (x >> 8) & 0xff;
 	p[1] = (x >> 16) & 0xff;
 	p[0] = (x >> 24) & 0xff;
+	*/
+	*(uint32_t*)pp = ((x >> 24) & 0x00000000ff) | ((x << 8) & 0x00ff0000) | ((x >> 8) & 0x0000ff00) | ((x << 24) & 0xff000000);
 }
 #endif
 
@@ -325,6 +328,8 @@ extern int scanhash_x11(int thr_id, struct work* work, uint32_t max_nonce, unsig
 extern int scanhash_x13(int thr_id, struct work* work, uint32_t max_nonce, unsigned long *hashes_done);
 extern int scanhash_x14(int thr_id, struct work* work, uint32_t max_nonce, unsigned long *hashes_done);
 extern int scanhash_x15(int thr_id, struct work* work, uint32_t max_nonce, unsigned long *hashes_done);
+
+
 extern int scanhash_x16r(int thr_id, struct work* work, uint32_t max_nonce, unsigned long *hashes_done);
 extern int scanhash_x17(int thr_id, struct work* work, uint32_t max_nonce, unsigned long *hashes_done);
 extern int scanhash_zr5(int thr_id, struct work *work, uint32_t max_nonce, unsigned long *hashes_done);

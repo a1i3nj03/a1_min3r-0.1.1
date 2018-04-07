@@ -1,3 +1,4 @@
+#if 0
 /*
  * X15 algorithm (CHC, BBC, X15C)
  * Added in ccminer by Tanguy Pruvot - 2014
@@ -273,3 +274,4 @@ extern "C" void free_x15(int thr_id)
 	cudaDeviceSynchronize();
 	init[thr_id] = false;
 }
+#endif

@@ -1,5 +1,7 @@
-#include <cuda_helper.h>
-#include <cuda_vectors.h>
+//#include <cuda_helper.h>
+//#include <cuda_vectors.h>
+#include "cuda_helper_alexis.h"
+#include "cuda_vectors_alexis.h"
 
 #define CUBEHASH_ROUNDS 16 /* this is r for CubeHashr/b */
 #define CUBEHASH_BLOCKBYTES 32 /* this is b for CubeHashr/b */
@@ -213,14 +215,14 @@ static void Final(uint32_t x[2][2][2][2][2], uint32_t *hashval)
 /***************************************************/
 
 __global__
-void x11_cubehash512_gpu_hash_64(uint32_t threads, uint32_t startNounce, uint64_t *g_hash, uint32_t *g_nonceVector)
+void x11_cubehash512_gpu_hash_64(uint32_t threads, uint64_t *g_hash)
 {
 	uint32_t thread = (blockDim.x * blockIdx.x + threadIdx.x);
 	if (thread < threads)
 	{
-		uint32_t nounce = (g_nonceVector != NULL) ? g_nonceVector[thread] : (startNounce + thread);
+		//uint32_t nounce = (g_nonceVector != NULL) ? g_nonceVector[thread] : (startNounce + thread);
 
-		int hashPosition = nounce - startNounce;
+		int hashPosition = thread;//nounce - startNounce;
 		uint32_t *Hash = (uint32_t*)&g_hash[8 * hashPosition];
 
 		uint32_t x[2][2][2][2][2];
@@ -241,7 +243,7 @@ void x11_cubehash512_gpu_hash_64(uint32_t threads, uint32_t startNounce, uint64_
 }
 
 __host__
-void x11_cubehash512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t startNounce, uint32_t *d_nonceVector, uint32_t *d_hash, int order)
+void x11_cubehash512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t *d_hash, int order)
 {
 	const uint32_t threadsperblock = 256;
 
@@ -250,7 +252,7 @@ void x11_cubehash512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t startNou
 
 	size_t shared_size = 0;
 
-	x11_cubehash512_gpu_hash_64<<<grid, block, shared_size>>>(threads, startNounce, (uint64_t*)d_hash, d_nonceVector);
+	x11_cubehash512_gpu_hash_64<<<grid, block, shared_size>>>(threads, (uint64_t*)d_hash);
 }
 
 __host__

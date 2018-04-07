@@ -2,7 +2,8 @@
 #include <memory.h>
 #include <sys/types.h> // off_t
 
-#include "cuda_helper.h"
+//#include "cuda_helper.h"
+#include "cuda_helper_alexis.h"
 
 #define U32TO64_LE(p) \
 	(((uint64_t)(*p)) | (((uint64_t)(*(p + 1))) << 32))
@@ -95,14 +96,14 @@ static void keccak_block(uint2 *s)
 }
 
 __global__
-void quark_keccak512_gpu_hash_64(uint32_t threads, uint32_t startNounce, uint64_t *g_hash, uint32_t *g_nonceVector)
+void quark_keccak512_gpu_hash_64(uint32_t threads, uint64_t *g_hash)
 {
 	uint32_t thread = (blockDim.x * blockIdx.x + threadIdx.x);
 	if (thread < threads)
 	{
-		uint32_t nounce = (g_nonceVector != NULL) ? g_nonceVector[thread] : (startNounce + thread);
+		//uint32_t nounce = (g_nonceVector != NULL) ? g_nonceVector[thread] : (startNounce + thread);
 
-		off_t hashPosition = nounce - startNounce;
+		off_t hashPosition = thread;//nounce - startNounce;
 		uint64_t *inpHash = &g_hash[hashPosition * 8];
 		uint2 keccak_gpu_state[25];
 
@@ -194,14 +195,14 @@ static void keccak_block_v30(uint64_t *s, const uint32_t *in)
 }
 
 __global__
-void quark_keccak512_gpu_hash_64_v30(uint32_t threads, uint32_t startNounce, uint64_t *g_hash, uint32_t *g_nonceVector)
+void quark_keccak512_gpu_hash_64_v30(uint32_t threads, uint64_t *g_hash)
 {
 	uint32_t thread = (blockDim.x * blockIdx.x + threadIdx.x);
 	if (thread < threads)
 	{
-		uint32_t nounce = (g_nonceVector != NULL) ? g_nonceVector[thread] : (startNounce + thread);
+		//uint32_t nounce = (g_nonceVector != NULL) ? g_nonceVector[thread] : (startNounce + thread);
 
-		off_t hashPosition = nounce - startNounce;
+		off_t hashPosition = thread;//nounce - startNounce;
 		uint32_t *inpHash = (uint32_t*)&g_hash[hashPosition * 8];
 
 		uint32_t message[18];
@@ -233,7 +234,7 @@ void quark_keccak512_gpu_hash_64_v30(uint32_t threads, uint32_t startNounce, uin
 }
 
 __host__
-void quark_keccak512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t startNounce, uint32_t *d_nonceVector, uint32_t *d_hash, int order)
+void quark_keccak512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t *d_hash, int order)
 {
 	const uint32_t threadsperblock = 256;
 
@@ -243,9 +244,9 @@ void quark_keccak512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t startNou
 	int dev_id = device_map[thr_id];
 
 	if (device_sm[dev_id] >= 320)
-		quark_keccak512_gpu_hash_64<<<grid, block>>>(threads, startNounce, (uint64_t*)d_hash, d_nonceVector);
+		quark_keccak512_gpu_hash_64<<<grid, block>>>(threads, (uint64_t*)d_hash);
 	else
-		quark_keccak512_gpu_hash_64_v30<<<grid, block>>>(threads, startNounce, (uint64_t*)d_hash, d_nonceVector);
+		quark_keccak512_gpu_hash_64_v30<<<grid, block>>>(threads, (uint64_t*)d_hash);
 
 	//MyStreamSynchronize(NULL, order, thr_id);
 }

@@ -1,3 +1,4 @@
+#if 0
 /*
  * Polytimos algorithm
  */
@@ -214,3 +215,4 @@ extern "C" void free_polytimos(int thr_id)
 	cudaDeviceSynchronize();
 	init[thr_id] = false;
 }
+#endif

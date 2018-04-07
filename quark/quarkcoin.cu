@@ -1,3 +1,4 @@
+#if 0
 extern "C"
 {
 #include "sph/sph_blake.h"
@@ -337,3 +338,4 @@ extern "C" void free_quark(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

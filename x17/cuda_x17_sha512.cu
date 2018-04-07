@@ -1,37 +1,38 @@
 /*
- * sha-512 cuda kernel implementation.
- *
- * ==========================(LICENSE BEGIN)============================
- *
- * Copyright (c) 2014 djm34
- *               2016 tpruvot
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * ===========================(LICENSE END)=============================
- */
+* sha-512 cuda kernel implementation.
+*
+* ==========================(LICENSE BEGIN)============================
+*
+* Copyright (c) 2014 djm34
+*               2016 tpruvot
+*
+* Permission is hereby granted, free of charge, to any person obtaining
+* a copy of this software and associated documentation files (the
+* "Software"), to deal in the Software without restriction, including
+* without limitation the rights to use, copy, modify, merge, publish,
+* distribute, sublicense, and/or sell copies of the Software, and to
+* permit persons to whom the Software is furnished to do so, subject to
+* the following conditions:
+*
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*
+* ===========================(LICENSE END)=============================
+*/
 #include <stdio.h>
 
 #define NEED_HASH_512
 
-#include "cuda_helper.h"
+//#include "cuda_helper.h"
+#include "cuda_helper_alexis.h"
 
 #define SWAP64(u64) cuda_swab64(u64)
 
@@ -61,8 +62,8 @@ static const uint64_t WB[80] = {
 };
 
 #define BSG5_0(x) xor3(ROTR64(x,28), ROTR64(x,34), ROTR64(x,39))
-#define SSG5_0(x) xor3(ROTR64(x, 1), ROTR64(x ,8), shr_t64(x,7))
-#define SSG5_1(x) xor3(ROTR64(x,19), ROTR64(x,61), shr_t64(x,6))
+#define SSG5_0(x) xor3(ROTR64(x, 1), ROTR64(x ,8), shr_u64(x,7))
+#define SSG5_1(x) xor3(ROTR64(x,19), ROTR64(x,61), shr_u64(x,6))
 
 //#define MAJ(X, Y, Z)   (((X) & (Y)) | (((X) | (Y)) & (Z)))
 #define MAJ(x, y, z)   andor(x,y,z)
@@ -71,12 +72,12 @@ __device__ __forceinline__
 uint64_t Tone(uint64_t* K, uint64_t* r, uint64_t* W, const int a, const int i)
 {
 	//asm("// TONE \n");
-	const uint64_t e = r[(a+4) & 7];
+	const uint64_t e = r[(a + 4) & 7];
 	uint64_t BSG51 = xor3(ROTR64(e, 14), ROTR64(e, 18), ROTR64(e, 41));
-	const uint64_t f = r[(a+5) & 7];
-	const uint64_t g = r[(a+6) & 7];
+	const uint64_t f = r[(a + 5) & 7];
+	const uint64_t g = r[(a + 6) & 7];
 	uint64_t CHl = ((f ^ g) & e) ^ g; // xandx(e, f, g);
-	return (r[(a+7) & 7] + BSG51 + CHl + K[i] + W[i]);
+	return (r[(a + 7) & 7] + BSG51 + CHl + K[i] + W[i]);
 }
 
 #define SHA3_STEP(K, r, W, ord, i) { \
@@ -95,25 +96,25 @@ void x17_sha512_gpu_hash_64(const uint32_t threads, uint64_t *g_hash)
 	if (thread < threads)
 	{
 		const uint64_t hashPosition = thread;
-		uint64_t *pHash = &g_hash[hashPosition*8U];
+		uint64_t *pHash = &g_hash[hashPosition * 8U];
 
 		uint64_t W[80];
-		#pragma unroll
-		for (int i = 0; i < 8; i ++) {
+#pragma unroll
+		for (int i = 0; i < 8; i++) {
 			W[i] = SWAP64(pHash[i]);
 		}
 		W[8] = 0x8000000000000000;
 
-		#pragma unroll 69
+#pragma unroll 69
 		for (int i = 9; i<78; i++) {
 			W[i] = 0U;
 		}
 		W[15] = 0x0000000000000200;
 
-		#pragma unroll 64
-		for (int i = 16; i < 80; i ++) {
-			W[i] = SSG5_1(W[i-2]) + W[i-7];
-			W[i] += SSG5_0(W[i-15]) + W[i-16];
+#pragma unroll 64
+		for (int i = 16; i < 80; i++) {
+			W[i] = SSG5_1(W[i - 2]) + W[i - 7];
+			W[i] += SSG5_0(W[i - 15]) + W[i - 16];
 		}
 
 		const uint64_t IV512[8] = {
@@ -124,29 +125,29 @@ void x17_sha512_gpu_hash_64(const uint32_t threads, uint64_t *g_hash)
 		};
 
 		uint64_t r[8];
-		#pragma unroll
-		for (int i = 0; i < 8; i ++) {
+#pragma unroll
+		for (int i = 0; i < 8; i++) {
 			r[i] = IV512[i];
 		}
 
 #if CUDART_VERSION >= 7050
-		#pragma unroll 10
+#pragma unroll 10
 #endif
 		for (int i = 0; i < 80; i += 8) {
-			#pragma unroll
+#pragma unroll
 			for (int ord = 0; ord < 8; ord++) {
-				SHA3_STEP(c_WB, r, W, ord, i+ord);
+				SHA3_STEP(c_WB, r, W, ord, i + ord);
 			}
 		}
 
-		#pragma unroll
-		for (int u = 0; u < 4; u ++) {
+#pragma unroll
+		for (int u = 0; u < 4; u++) {
 			pHash[u] = SWAP64(r[u] + IV512[u]);
 		}
 
 #ifdef NEED_HASH_512
-		#pragma unroll
-		for (int u = 4; u < 8; u ++) {
+#pragma unroll
+		for (int u = 4; u < 8; u++) {
 			pHash[u] = SWAP64(r[u] + IV512[u]);
 		}
 #endif
@@ -156,18 +157,18 @@ void x17_sha512_gpu_hash_64(const uint32_t threads, uint64_t *g_hash)
 __host__
 void x17_sha512_cpu_init(int thr_id, uint32_t threads)
 {
-	cudaMemcpyToSymbol(c_WB, WB, 80*sizeof(uint64_t), 0, cudaMemcpyHostToDevice);
+	cudaMemcpyToSymbol(c_WB, WB, 80 * sizeof(uint64_t), 0, cudaMemcpyHostToDevice);
 }
 
 __host__
-void x17_sha512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t startNounce, uint32_t *d_hash)
+void x17_sha512_cpu_hash_64(int thr_id, uint32_t threads, uint32_t *d_hash, int count)
 {
 	const uint32_t threadsperblock = 256;
 
-	dim3 grid((threads + threadsperblock-1)/threadsperblock);
+	dim3 grid((threads + threadsperblock - 1) / threadsperblock);
 	dim3 block(threadsperblock);
 
-	x17_sha512_gpu_hash_64 <<<grid, block>>> (threads, (uint64_t*)d_hash);
+	x17_sha512_gpu_hash_64 << <grid, block >> > (threads, (uint64_t*)d_hash);
 }
 
 __constant__
@@ -181,8 +182,8 @@ void x16_sha512_gpu_hash_80(const uint32_t threads, const uint32_t startNonce, u
 	if (thread < threads)
 	{
 		uint64_t W[80];
-		#pragma unroll
-		for (int i = 0; i < 9; i ++) {
+#pragma unroll
+		for (int i = 0; i < 9; i++) {
 			W[i] = SWAP64(c_PaddedMessage80[i]);
 		}
 		const uint32_t nonce = startNonce + thread;
@@ -191,16 +192,16 @@ void x16_sha512_gpu_hash_80(const uint32_t threads, const uint32_t startNonce, u
 		W[9] = cuda_swab64(W[9]);
 		W[10] = 0x8000000000000000;
 
-		#pragma unroll
+#pragma unroll
 		for (int i = 11; i<15; i++) {
 			W[i] = 0U;
 		}
 		W[15] = 0x0000000000000280;
 
-		#pragma unroll 64
-		for (int i = 16; i < 80; i ++) {
-			W[i] = SSG5_1(W[i-2]) + W[i-7];
-			W[i] += SSG5_0(W[i-15]) + W[i-16];
+#pragma unroll 64
+		for (int i = 16; i < 80; i++) {
+			W[i] = SSG5_1(W[i - 2]) + W[i - 7];
+			W[i] += SSG5_0(W[i - 15]) + W[i - 16];
 		}
 
 		const uint64_t IV512[8] = {
@@ -211,20 +212,20 @@ void x16_sha512_gpu_hash_80(const uint32_t threads, const uint32_t startNonce, u
 		};
 
 		uint64_t r[8];
-		#pragma unroll
+#pragma unroll
 		for (int i = 0; i < 8; i++) {
 			r[i] = IV512[i];
 		}
 
-		#pragma unroll
+#pragma unroll
 		for (int i = 0; i < 80; i++) {
-			SHA3_STEP(c_WB, r, W, i&7, i);
+			SHA3_STEP(c_WB, r, W, i & 7, i);
 		}
 
 		const uint64_t hashPosition = thread;
 		uint64_t *pHash = &g_hash[hashPosition << 3];
-		#pragma unroll
-		for (int u = 0; u < 8; u ++) {
+#pragma unroll
+		for (int u = 0; u < 8; u++) {
 			pHash[u] = SWAP64(r[u] + IV512[u]);
 		}
 	}
@@ -235,10 +236,10 @@ void x16_sha512_cuda_hash_80(int thr_id, const uint32_t threads, const uint32_t 
 {
 	const uint32_t threadsperblock = 256;
 
-	dim3 grid((threads + threadsperblock-1)/threadsperblock);
+	dim3 grid((threads + threadsperblock - 1) / threadsperblock);
 	dim3 block(threadsperblock);
 
-	x16_sha512_gpu_hash_80 <<<grid, block >>> (threads, startNounce, (uint64_t*)d_hash);
+	x16_sha512_gpu_hash_80 << <grid, block >> > (threads, startNounce, (uint64_t*)d_hash);
 }
 
 __host__

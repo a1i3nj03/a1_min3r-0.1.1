@@ -1,18 +1,5 @@
 # ccminer
 
-Download here: https://github.com/a1i3nj03/a1_min3r-0.1.1/releases/download/0.1.1/ccminer.zip.Windows.x64.zip
-
-Use the source: https://github.com/a1i3nj03/a1_min3r-0.1.1/archive/0.1.1.tar.gz
-
-use like this: ccminer -i 21 -a x16r -o stratum+tcp://myminingpoolisthebest.est:1337 - mywalletisbetterthanurs.TR_FTW -p password123 --submit-stale
-
-Younger better faster
-
-I R broke'd, send me (a1i3nj03) RVN coinz @ RP6cmcZNE9g5oEakzCb88DgVJSLVBYJwnu PLZ
-
-Forgot to add dev fee :sadparrot:
-
-
 Based on Christian Buchner's &amp; Christian H.'s CUDA project, no more active on github since 2014.
 
 Check the [README.txt](README.txt) for the additions
@@ -21,12 +8,12 @@ BTC donation address: 1AJdfCpLWPNoAMDfHF1wD5y8VgKSSTHxPo (tpruvot)
 
 A part of the recent algos were originally written by [djm34](https://github.com/djm34) and [alexis78](https://github.com/alexis78)
 
-This variant may be built on Linux someday (ubuntu server 14.04, 16.04, Fedora 22 to 25)
-It is built for Windows 7 to 10 with VStudio 2013, to stay compatible with Windows 7 and Vista.
+This variant was tested and built on Linux (ubuntu server 14.04, 16.04, Fedora 22 to 25)
+It is also built for Windows 7 to 10 with VStudio 2013, to stay compatible with Windows 7 and Vista.
 
-Note that the x86 releases are generally NOT faster than x64 ones on Windows, that tends to change with the recent drivers.
+Note that the x86 releases are generally faster than x64 ones on Windows, but that tend to change with the recent drivers.
 
-The recommended CUDA Toolkit version was the [6.5.19](http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.19_windows_general_64.exe), but some light algos could be faster with the version 7.5 and 8.0 (like lbry, decred and skein). CUDA 9.0 was used, but 9.1 should be even better.
+The recommended CUDA Toolkit version was the [6.5.19](http://developer.download.nvidia.com/compute/cuda/6_5/rel/installers/cuda_6.5.19_windows_general_64.exe), but some light algos could be faster with the version 7.5 and 8.0 (like lbry, decred and skein).
 
 About source code dependencies
 ------------------------------

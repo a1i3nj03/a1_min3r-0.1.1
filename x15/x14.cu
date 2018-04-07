@@ -1,3 +1,4 @@
+#if 0
 /*
  * X14 algorithm
  * Added in ccminer by Tanguy Pruvot - 2014
@@ -268,3 +269,4 @@ extern "C" void free_x14(int thr_id)
 	cudaDeviceSynchronize();
 	init[thr_id] = false;
 }
+#endif

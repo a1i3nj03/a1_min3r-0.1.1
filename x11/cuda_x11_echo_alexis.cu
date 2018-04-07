@@ -439,7 +439,7 @@ static void x11_echo512_gpu_hash_64_alexis(uint32_t threads, uint32_t *g_hash)
 }
 
 __host__
-void x11_echo512_cpu_hash_64_alexis(int thr_id, uint32_t threads, uint32_t *d_hash){
+void x11_echo512_cpu_hash_64_alexis(int thr_id, uint32_t threads, uint32_t *d_hash, int order){
 
 	const uint32_t threadsperblock = 128;
 

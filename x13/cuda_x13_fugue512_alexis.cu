@@ -406,7 +406,7 @@ void x13_fugue512_gpu_hash_64_final_alexis(uint32_t threads,const uint32_t* __re
 }
 
 __host__
-void x13_fugue512_cpu_hash_64_alexis(int thr_id, uint32_t threads, uint32_t *d_hash){
+void x13_fugue512_cpu_hash_64_alexis(int thr_id, uint32_t threads, uint32_t *d_hash, int order){
 
 	const uint32_t threadsperblock = 256;
 

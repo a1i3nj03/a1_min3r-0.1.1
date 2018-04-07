@@ -1,3 +1,4 @@
+#if 0
 extern "C" {
 #include "sph/sph_blake.h"
 #include "sph/sph_bmw.h"
@@ -231,3 +232,4 @@ extern "C" void free_x11(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif

@@ -653,4 +653,14 @@ uint32_t ROL16(const uint32_t a){
     #define ROL16(u) ROTL32(u,16)
 #endif
 */
+
+static __inline__ __device__ uint2x4 make_uint2x4(uint2 s0, uint2 s1, uint2 s2, uint2 s3)
+{
+	uint2x4 t;
+	t.x = s0; t.y = s1; t.z = s2; t.w = s3;
+	return t;
+}
+
+/////////////////////////
+
 #endif // #ifndef CUDA_LYRA_VECTOR_H

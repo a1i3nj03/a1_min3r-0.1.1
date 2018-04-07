@@ -1,3 +1,4 @@
+#if 0
 /**
  * HMQ1725 algorithm
  * @author tpruvot@github 02-2017
@@ -540,3 +541,4 @@ extern "C" void free_hmq17(int thr_id)
 	cudaDeviceSynchronize();
 	init[thr_id] = false;
 }
+#endif

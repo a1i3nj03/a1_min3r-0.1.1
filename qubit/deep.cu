@@ -1,3 +1,4 @@
+#if 0
 /*
  * deepcoin algorithm
  *
@@ -155,3 +156,4 @@ extern "C" void free_deep(int thr_id)
 
 	cudaDeviceSynchronize();
 }
+#endif
